@@ -9,7 +9,7 @@ pipeline {
 
         stage('Checkout Code') {
             steps {
-                // Checkout the repo
+                // Checkout the repo from GitHub
                 checkout scm
             }
         }
@@ -19,29 +19,26 @@ pipeline {
                 // Create virtual environment and install dependencies
                 sh '''
                 python3 -m venv $VENV_DIR
-                source $VENV_DIR/bin/activate
-                pip install --upgrade pip
-                if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+                $VENV_DIR/bin/pip install --upgrade pip
+                if [ -f requirements.txt ]; then $VENV_DIR/bin/pip install -r requirements.txt; fi
                 '''
             }
         }
 
         stage('Run Script') {
             steps {
-                // Run your Python script
+                // Run your Python script using the virtual environment
                 sh '''
-                source $VENV_DIR/bin/activate
-                python3 hello.py
+                $VENV_DIR/bin/python hello.py
                 '''
             }
         }
 
         stage('Optional Tests') {
             steps {
-                // If you have tests, run them here
+                // Run tests if test_hello.py exists
                 sh '''
-                source $VENV_DIR/bin/activate
-                if [ -f test_hello.py ]; then python3 -m unittest test_hello.py; fi
+                if [ -f test_hello.py ]; then $VENV_DIR/bin/python -m unittest test_hello.py; fi
                 '''
             }
         }
