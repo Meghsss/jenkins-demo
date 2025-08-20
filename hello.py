@@ -1,1 +1,1 @@
-print("hello, i have changed the output to test triggers via ngrok!")
+print("Testing triggers, changed output!")
